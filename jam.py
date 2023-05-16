@@ -12,8 +12,11 @@ def change_background():
     file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.png;*.jpg;*.jpeg")])
     if file_path:
         try:
+            width = int(input("Masukkan lebar gambar latar belakang (dalam piksel): "))
+            height = int(input("Masukkan tinggi gambar latar belakang (dalam piksel): "))
+            
             image = Image.open(file_path)
-            resized_image = image.resize((800, 400), Image.ANTIALIAS)
+            resized_image = image.resize((width, height), Image.ANTIALIAS)
             background_image = ImageTk.PhotoImage(resized_image)
             background_label.config(image=background_image)
             background_label.image = background_image
