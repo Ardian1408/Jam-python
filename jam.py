@@ -12,8 +12,8 @@ def change_background():
     file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.png;*.jpg;*.jpeg")])
     if file_path:
         try:
-            width = int(input("Masukkan lebar gambar latar belakang (dalam piksel): "))
-            height = int(input("Masukkan tinggi gambar latar belakang (dalam piksel): "))
+            width = int(width_entry.get())
+            height = int(height_entry.get())
             
             image = Image.open(file_path)
             resized_image = image.resize((width, height), Image.ANTIALIAS)
@@ -37,6 +37,17 @@ background_label.place(x=0, y=0, relwidth=1, relheight=1)
 # Tombol untuk mengubah latar belakang
 change_background_button = tk.Button(window, text="Change Background", command=change_background)
 change_background_button.pack(pady=10)
+
+# Label dan entry untuk mengatur ukuran gambar
+width_label = tk.Label(window, text="Width:")
+width_label.pack()
+width_entry = tk.Entry(window)
+width_entry.pack()
+
+height_label = tk.Label(window, text="Height:")
+height_label.pack()
+height_entry = tk.Entry(window)
+height_entry.pack()
 
 # Membuat label untuk menampilkan jam
 clock_label = tk.Label(window, font=("Arial", 80))
