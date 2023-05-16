@@ -1,7 +1,8 @@
+import pygame
 import tkinter as tk
 from tkinter import filedialog
 import time
-from PIL import ImageTk, Image
+from PIL import Image, ImageTk
 
 def update_clock():
     current_time = time.strftime("%H:%M:%S")
@@ -12,14 +13,28 @@ def change_background():
     file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.png;*.jpg;*.jpeg")])
     if file_path:
         try:
-            width = int(width_entry.get())
-            height = int(height_entry.get())
-            
-            image = Image.open(file_path)
-            resized_image = image.resize((width, height), Image.ANTIALIAS)
-            background_image = ImageTk.PhotoImage(resized_image)
-            background_label.config(image=background_image)
-            background_label.image = background_image
+            pygame.init()
+            screen = pygame.display.set_mode((800, 400))
+            background = pygame.image.load(file_path)
+
+            running = True
+            while running:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        running = False
+                    elif event.type == pygame.MOUSEBUTTONUP:
+                        width, height = background.get_size()
+                        image = Image.open(file_path)
+                        resized_image = image.resize((width, height), Image.ANTIALIAS)
+                        background_image = ImageTk.PhotoImage(resized_image)
+                        background_label.config(image=background_image)
+                        background_label.image = background_image
+                        running = False
+
+                screen.blit(background, (0, 0))
+                pygame.display.flip()
+
+            pygame.quit()
         except:
             tk.messagebox.showerror("Error", "Failed to open the selected image.")
 
@@ -37,17 +52,6 @@ background_label.place(x=0, y=0, relwidth=1, relheight=1)
 # Tombol untuk mengubah latar belakang
 change_background_button = tk.Button(window, text="Change Background", command=change_background)
 change_background_button.pack(pady=10)
-
-# Label dan entry untuk mengatur ukuran gambar
-width_label = tk.Label(window, text="Width:")
-width_label.pack()
-width_entry = tk.Entry(window)
-width_entry.pack()
-
-height_label = tk.Label(window, text="Height:")
-height_label.pack()
-height_entry = tk.Entry(window)
-height_entry.pack()
 
 # Membuat label untuk menampilkan jam
 clock_label = tk.Label(window, font=("Arial", 80))
